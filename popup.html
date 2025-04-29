@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Caller</title>
+  <script>
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    async function callApiAndClose() {
+      const apiUrl = getQueryParam('api');
+      if (!apiUrl) {
+        document.body.innerText = "Error: No API URL provided in ?api=";
+        return;
+      }
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'GET', // or 'POST' depending on your need
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        console.log('Success:', await response.text());
+      } catch (error) {
+        console.error('API call failed:', error);
+      }
+
+      // Close the tab or window
+      window.close();
+    }
+
+    window.onload = callApiAndClose;
+  </script>
+</head>
+<body>
+  <p>Calling API and closing...</p>
+</body>
+</html>
