@@ -11,22 +11,25 @@
     async function callApiAndClose() {
       const apiUrl = getQueryParam('api');
       if (!apiUrl) {
-        document.body.innerText = "Error: No API URL provided in ?api=";
+        document.body.innerText = 'Error: No API URL provided in "?api="';
         return;
       }
 
+      console.log(`Calling API at "${apiUrl}"`);
+
       try {
         const response = await fetch(apiUrl, {
-          method: 'GET', // or 'POST' depending on your need
+          method: 'GET',
         });
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        console.log('Success:', await response.text());
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        const result = await response.text();
+        console.log(`Success from "${apiUrl}":`, result);
       } catch (error) {
-        console.error('API call failed:', error);
+        console.error(`Failed to call "${apiUrl}":`, error);
       }
 
-      // Close the tab or window
+      // Close the popup (will only work if opened via JS)
       window.close();
     }
 
